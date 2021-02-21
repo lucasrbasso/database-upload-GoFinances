@@ -56,7 +56,7 @@ transactionsRouter.post(
             request.file.filename,
         );
 
-        return response.json({ transactions });
+        return response.json(transactions);
     },
 );
 
