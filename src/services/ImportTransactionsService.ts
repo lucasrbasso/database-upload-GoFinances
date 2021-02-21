@@ -2,10 +2,9 @@ import csvParse from 'csv-parse';
 import fs from 'fs';
 import path from 'path';
 
-import { getCustomRepository, getRepository, In } from 'typeorm';
+import { getRepository, In } from 'typeorm';
 
 import uploadConfig from '../config/upload';
-import TransactionsRepository from '../repositories/TransactionsRepository';
 import Category from '../models/Category';
 import Transaction from '../models/Transaction';
 
@@ -23,9 +22,7 @@ class ImportTransactionsService {
             transactionsFileName,
         );
 
-        const transactionsRepository = getCustomRepository(
-            TransactionsRepository,
-        );
+        const transactionsRepository = getRepository(Transaction);
         const categoryRepository = getRepository(Category);
 
         const readCSVStream = fs.createReadStream(csvFilePath);
@@ -59,16 +56,16 @@ class ImportTransactionsService {
             where: In(categories),
         });
 
-        const existentCategorioesTitle = existsCategories.map(
+        const categoriesTitle = existsCategories.map(
             category => category.title,
         );
 
-        const addCategoryTitles = categories
-            .filter(category => !existentCategorioesTitle.includes(category))
+        const addCategory = categories
+            .filter(category => !categoriesTitle.includes(category))
             .filter((value, index, self) => self.indexOf(value) === index);
 
         const newCategories = categoryRepository.create(
-            addCategoryTitles.map(title => ({
+            addCategory.map(title => ({
                 title,
             })),
         );
