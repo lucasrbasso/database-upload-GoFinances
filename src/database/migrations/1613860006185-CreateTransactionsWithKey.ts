@@ -26,7 +26,7 @@ export default class CreateTransactionsWithKey1613860006185
                     },
                     {
                         name: 'value',
-                        type: 'numeric',
+                        type: 'float',
                         isNullable: false,
                     },
                     {
